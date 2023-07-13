@@ -1,6 +1,6 @@
-﻿namespace SocialNetworkAPI.Models
+﻿namespace SocialNetworkAPI.Dtos.User
 {
-    public class User
+    public class GetUserDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; } = string.Empty;

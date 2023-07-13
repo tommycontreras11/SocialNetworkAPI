@@ -1,3 +1,7 @@
+global using Microsoft.EntityFrameworkCore;
+global using SocialNetworkAPI.Models;
+global using SocialNetworkAPI.Enums;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
