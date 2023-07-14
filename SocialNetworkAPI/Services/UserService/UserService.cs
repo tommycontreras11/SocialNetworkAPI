@@ -16,8 +16,7 @@ namespace SocialNetworkAPI.Services.UserService
         public async Task<ServiceResponse<List<GetUserDto>>> GetAllUsers()
         {
             var serviceResponse = new ServiceResponse<List<GetUserDto>>();
-            var users = await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync();
-            serviceResponse.Data = users;
+            serviceResponse.Data = await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync();
             return serviceResponse;
         }
 
@@ -42,15 +41,14 @@ namespace SocialNetworkAPI.Services.UserService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetUserDto>> AddUser(AddUserDto request)
+        public async Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto request)
         {
-            var serviceResponse = new ServiceResponse<GetUserDto>();
+            var serviceResponse = new ServiceResponse<List<GetUserDto>>();
             var user = _mapper.Map<User>(request);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            int userId = _context.Users.Max(u => u.Id);
-            var foundUser = _context.Users.FirstOrDefault(u => u.Id == userId);
-            return _mapper.Map<ServiceResponse<GetUserDto>>(foundUser);
+            serviceResponse.Data = _context.Users.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
+            return serviceResponse;
         }
 
         public async Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto request)
@@ -93,9 +91,7 @@ namespace SocialNetworkAPI.Services.UserService
 
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
-
-                var users = await _context.Users.ToListAsync();
-                serviceResponse.Data = _mapper.Map<List<GetUserDto>>(users);
+                serviceResponse.Data = _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToList();
             }
             catch (Exception ex)
             {
