@@ -49,7 +49,7 @@ namespace SocialNetworkAPI.Data
                 .IsRequired();
 
            modelBuilder.Entity<User>()
-                .Property(u => u.Age)
+                .Property(u => u.Gender)
                 .IsRequired();
            #endregion
 
