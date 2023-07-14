@@ -4,6 +4,7 @@ global using SocialNetworkAPI.Enums;
 global using SocialNetworkAPI.Dtos.User;
 global using SocialNetworkAPI.Data;
 global using SocialNetworkAPI.Services.UserService;
+global using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,8 +1,9 @@
-﻿namespace SocialNetworkAPI.Models
+﻿using SocialNetworkAPI.Common;
+
+namespace SocialNetworkAPI.Models
 {
-    public class User
+    public class User : AuditableBaseEntity
     {
-        public int Id { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public int Age { get; set; }

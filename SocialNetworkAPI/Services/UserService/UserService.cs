@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-
-namespace SocialNetworkAPI.Services.UserService
+﻿namespace SocialNetworkAPI.Services.UserService
 {
     public class UserService : IUserService
     {
@@ -41,13 +39,14 @@ namespace SocialNetworkAPI.Services.UserService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetUserDto>>> AddUser(AddUserDto request)
+        public async Task<ServiceResponse<GetUserDto>> AddUser(AddUserDto request)
         {
-            var serviceResponse = new ServiceResponse<List<GetUserDto>>();
+            var serviceResponse = new ServiceResponse<GetUserDto>();
             var user = _mapper.Map<User>(request);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            serviceResponse.Data = _context.Users.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
+            var foundUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+            serviceResponse.Data = _mapper.Map<GetUserDto>(foundUser);
             return serviceResponse;
         }
 

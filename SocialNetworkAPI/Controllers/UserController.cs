@@ -31,7 +31,7 @@ namespace SocialNetworkAPI.Controllers
         }
 
         [HttpPost("AddUser")]
-        public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> Post(AddUserDto request)
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> Post(AddUserDto request)
         {
             return Ok(await _userService.AddUser(request));
         }
