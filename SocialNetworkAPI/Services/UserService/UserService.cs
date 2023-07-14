@@ -24,9 +24,7 @@
 
             try
             {
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-                if (user is null)
-                    throw new Exception($"User with the Id '{id}' not found.");
+                var user = await FindUser(id);
 
                 serviceResponse.Data = _mapper.Map<GetUserDto>(user);
             }
@@ -56,9 +54,7 @@
 
             try
             {
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.Id);
-                if (user is null)
-                    throw new Exception($"User with the Id '{request.Id}' not found.");
+                var user = await FindUser(request.Id);
 
                 user.FirstName = request.FirstName;
                 user.LastName = request.LastName;
@@ -84,9 +80,7 @@
 
             try
             {
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-                if (user is null)
-                    throw new Exception($"User with the Id '{id}' not found.");
+                var user = await FindUser(id);
 
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
@@ -99,6 +93,15 @@
             }
 
             return serviceResponse;
+        }
+
+        public async Task<User> FindUser(int id) 
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user is null)
+                throw new Exception($"User with the Id '{id}' not found.");
+
+            return user;
         }
     }
 }

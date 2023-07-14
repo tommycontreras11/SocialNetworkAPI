@@ -7,5 +7,6 @@
         Task<ServiceResponse<GetUserDto>> AddUser(AddUserDto request);
         Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto request);
         Task<ServiceResponse<List<GetUserDto>>> DeleteUser(int id);
+        Task<User> FindUser(int id);
     }
 }
