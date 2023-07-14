@@ -1,4 +1,5 @@
 ﻿using SocialNetworkAPI.Dtos.Post;
+using SocialNetworkAPI.Models;
 
 namespace SocialNetworkAPI.Services.PostService
 {
@@ -23,8 +24,19 @@ namespace SocialNetworkAPI.Services.PostService
         public async Task<ServiceResponse<GetPostDto>> GetPostById(int id)
         {
             var serviceResponse = new ServiceResponse<GetPostDto>();
-            var post = await FindPost(id);
-            serviceResponse.Data = _mapper.Map<GetPostDto>(post);
+
+            try
+            {
+                var post = await FindPost(id);
+
+                serviceResponse.Data = _mapper.Map<GetPostDto>(post);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
             return serviceResponse;
         }
 
@@ -37,16 +49,28 @@ namespace SocialNetworkAPI.Services.PostService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetPostDto>> UpdatePost(int id, UpdatePostDto request)
+        public async Task<ServiceResponse<GetPostDto>> UpdatePost(UpdatePostDto request)
         {
             var serviceResponse = new ServiceResponse<GetPostDto>();
-            var post = await FindPost(id);
-            
-            post.Data.Title = request.Title;
-            post.Data.Description = request.Description;
-            post.Data.ImageUrl = request.ImageUrl;
 
-            serviceResponse.Data = _mapper.Map<GetPostDto>(post);
+            try
+            {
+                var post = await FindPost(request.Id);
+                
+                post.Title = request.Title;
+                post.Description = request.Description;
+                post.ImageUrl = request.ImageUrl;
+
+                await _context.SaveChangesAsync();
+
+                serviceResponse.Data = _mapper.Map<GetPostDto>(post);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
             return serviceResponse;    
         }
 
@@ -62,25 +86,13 @@ namespace SocialNetworkAPI.Services.PostService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetPostDto>> FindPost(int id)
+        public async Task<Post> FindPost(int id)
         {
-            var serviceResponse = new ServiceResponse<GetPostDto>();
+            var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+            if (post is null)
+                throw new Exception($"Post with the Id '{id}' not found.");
 
-            try
-            {
-                var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
-                if (post is null)
-                    throw new Exception($"Post with the Id '{id}' not found.");
-
-                serviceResponse.Data = _mapper.Map<GetPostDto>(post);
-            }
-            catch (Exception ex)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = ex.Message;
-            }
-
-            return serviceResponse;
+            return post;
         }
     }
 }

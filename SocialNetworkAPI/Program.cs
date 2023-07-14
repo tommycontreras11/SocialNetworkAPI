@@ -2,8 +2,10 @@ global using Microsoft.EntityFrameworkCore;
 global using SocialNetworkAPI.Models;
 global using SocialNetworkAPI.Enums;
 global using SocialNetworkAPI.Dtos.User;
+global using SocialNetworkAPI.Dtos.Post;
 global using SocialNetworkAPI.Data;
 global using SocialNetworkAPI.Services.UserService;
+global using SocialNetworkAPI.Services.PostService;
 global using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();

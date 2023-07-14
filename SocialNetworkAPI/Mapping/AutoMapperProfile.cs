@@ -6,8 +6,15 @@ namespace SocialNetworkAPI.Mapping
     {
         public AutoMapperProfile()
         {
+            #region User
             CreateMap<User, GetUserDto>();
             CreateMap<AddUserDto, User>();
+            #endregion
+
+            #region Post
+            CreateMap<Post, GetPostDto>();
+            CreateMap<AddPostDto, Post>();
+            #endregion
         }
     }
 }
