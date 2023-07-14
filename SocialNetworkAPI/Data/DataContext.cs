@@ -6,6 +6,7 @@ namespace SocialNetworkAPI.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<User> Users => Set<User>();
+        public DbSet<Post> Posts => Set<Post>();
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -14,16 +15,45 @@ namespace SocialNetworkAPI.Data
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.Created = DateTime.Now;
+                        entry.Entity.CreatedAt = DateTime.Now;
                         break;
 
                     case EntityState.Modified:
-                        entry.Entity.LastModified = DateTime.Now;
+                        entry.Entity.ModifiedAt = DateTime.Now;
                         break;
                 }
             }
 
             return base.SaveChangesAsync(cancellationToken);
+        }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            #region Tables
+            modelBuilder.Entity<User>()
+                .ToTable("Users");
+
+            modelBuilder.Entity<Post>()
+                .ToTable("Posts");
+            #endregion
+
+            #region Properties
+            modelBuilder.Entity<User>()
+                .Property(u => u.FirstName)
+                .HasMaxLength(60)
+                .IsRequired();
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.LastName)
+                .HasMaxLength(60)
+                .IsRequired();
+
+           modelBuilder.Entity<User>()
+                .Property(u => u.Age)
+                .IsRequired();
+           #endregion
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
