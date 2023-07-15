@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SocialNetworkAPI.Dtos.Post;
-using SocialNetworkAPI.Services.PostService;
 
 namespace SocialNetworkAPI.Controllers
 {

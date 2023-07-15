@@ -15,6 +15,11 @@ namespace SocialNetworkAPI.Mapping
             CreateMap<Post, GetPostDto>();
             CreateMap<AddPostDto, Post>();
             #endregion
+
+            #region Comment
+            CreateMap<Comment, GetCommentDto>();
+            CreateMap<AddCommentDto, Comment>();
+            #endregion
         }
     }
 }
