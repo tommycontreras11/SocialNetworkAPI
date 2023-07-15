@@ -38,6 +38,8 @@ namespace SocialNetworkAPI.Data
             #endregion
 
             #region Properties
+
+            #region User
             modelBuilder.Entity<User>()
                 .Property(u => u.FirstName)
                 .HasMaxLength(60)
@@ -48,10 +50,23 @@ namespace SocialNetworkAPI.Data
                 .HasMaxLength(60)
                 .IsRequired();
 
-           modelBuilder.Entity<User>()
-                .Property(u => u.Gender)
+            modelBuilder.Entity<User>()
+                 .Property(u => u.Gender)
+                 .IsRequired();
+            #endregion
+
+            #region Post
+            modelBuilder.Entity<Post>()
+                .Property(p => p.Title)
+                .HasMaxLength(50)
                 .IsRequired();
-           #endregion
+
+            modelBuilder.Entity<Post>()
+                .Property(p => p.Description)
+                .HasMaxLength(500);
+            #endregion
+
+            #endregion
 
             base.OnModelCreating(modelBuilder);
         }
