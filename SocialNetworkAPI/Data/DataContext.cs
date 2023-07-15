@@ -7,6 +7,7 @@ namespace SocialNetworkAPI.Data
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<User> Users => Set<User>();
         public DbSet<Post> Posts => Set<Post>();
+        public DbSet<Comment> Comments => Set<Comment>();
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -66,6 +67,27 @@ namespace SocialNetworkAPI.Data
                 .HasMaxLength(500);
             #endregion
 
+            #region Comment
+            modelBuilder.Entity<Comment>()
+                .Property(c => c.Description)
+                .HasMaxLength(500)
+                .IsRequired();
+            #endregion
+
+            #endregion
+
+            #region Relationships
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Comments)
+                .WithOne(u => u.User)
+                .HasForeignKey(u => u.UserId)
+                .IsRequired();
+
+            modelBuilder.Entity<Post>()
+                .HasMany(p => p.Comments)
+                .WithOne(p => p.Post)
+                .HasForeignKey(p => p.PostId)
+                .IsRequired();
             #endregion
 
             base.OnModelCreating(modelBuilder);

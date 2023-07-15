@@ -9,12 +9,11 @@ namespace SocialNetworkAPI.Dtos.Post
         [DataType(DataType.Text)]
         public string Title { get; set; } = string.Empty;
         
-        [Required(ErrorMessage = "The field lastname is required")]
         [MaxLength(500, ErrorMessage = "Max length for description is 500")]
         [DataType(DataType.Text)]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
 
         [DataType(DataType.Text)]
-        public string ImageUrl { get; set; } = string.Empty;
+        public string? ImageUrl { get; set; } = string.Empty;
     }
 }
