@@ -1,7 +1,4 @@
-﻿using SocialNetworkAPI.Dtos.Post;
-using SocialNetworkAPI.Models;
-
-namespace SocialNetworkAPI.Services.PostService
+﻿namespace SocialNetworkAPI.Services.PostService
 {
     public class PostService : IPostService
     {
@@ -40,12 +37,14 @@ namespace SocialNetworkAPI.Services.PostService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetPostDto>>> AddPost(AddPostDto request)
+        public async Task<ServiceResponse<GetPostDto>> AddPost(AddPostDto request)
         {
-            var serviceResponse = new ServiceResponse<List<GetPostDto>>();
-            _context.Posts.Add(_mapper.Map<Post>(request));
+            var serviceResponse = new ServiceResponse<GetPostDto>();
+            var post = _mapper.Map<Post>(request);
+            _context.Posts.Add(post);
             await _context.SaveChangesAsync();
-            serviceResponse.Data = _context.Posts.Select(p => _mapper.Map<GetPostDto>(p)).ToList();
+            var foundPost = await _context.Posts.FirstOrDefaultAsync(p => p.Id == post.Id);
+            serviceResponse.Data = _mapper.Map<GetPostDto>(foundPost);
             return serviceResponse;
         }
 
@@ -78,11 +77,21 @@ namespace SocialNetworkAPI.Services.PostService
         {
             var serviceResponse = new ServiceResponse<List<GetPostDto>>();
 
-            var post = await FindPost(id);
-            _context.Posts.Remove(_mapper.Map<Post>(post));
-            await _context.SaveChangesAsync();
+            try
+            {
+                var post = await FindPost(id);
 
-            serviceResponse.Data = _context.Posts.Select(p => _mapper.Map<GetPostDto>(p)).ToList();
+                _context.Posts.Remove(_mapper.Map<Post>(post));
+                await _context.SaveChangesAsync();
+
+                serviceResponse.Data = _context.Posts.Select(p => _mapper.Map<GetPostDto>(p)).ToList();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
             return serviceResponse;
         }
 

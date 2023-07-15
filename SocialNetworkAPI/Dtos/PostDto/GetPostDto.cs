@@ -1,4 +1,4 @@
-﻿namespace SocialNetworkAPI.Dtos.Post
+﻿namespace SocialNetworkAPI.Dtos.PostDto
 {
     public class GetPostDto
     {

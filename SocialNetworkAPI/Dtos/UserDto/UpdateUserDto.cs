@@ -1,20 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SocialNetworkAPI.Dtos.User
+namespace SocialNetworkAPI.Dtos.UserDto
 {
-    public class AddUserDto
+    public class UpdateUserDto
     {
+        [Required(ErrorMessage = "The field id is required")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "Value must be start with 1")]
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "The field firstname is required")]
-        [MaxLength(60, ErrorMessage = "Max length for firstname is 60")]
         [DataType(DataType.Text)]
         public string FirstName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "The field lastname is required")]
-        [MaxLength(60, ErrorMessage = "Max length for lastname is 60")]
         [DataType(DataType.Text)]
         public string LastName { get; set; } = string.Empty;
 
-        [Range(1, 120, ErrorMessage = "Value must be between 1 to 120")]
+        [Range(1, 120, ErrorMessage = "The field age must be between 1 to 120")]
         public int? Age { get; set; }
 
         [Required(ErrorMessage = "The field gender is required")]

@@ -14,7 +14,7 @@
         public async Task<ServiceResponse<List<GetUserDto>>> GetAllUsers()
         {
             var serviceResponse = new ServiceResponse<List<GetUserDto>>();
-            serviceResponse.Data = await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync();
+            serviceResponse.Data = await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync(); ;
             return serviceResponse;
         }
 
@@ -84,6 +84,7 @@
 
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
+
                 serviceResponse.Data = _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToList();
             }
             catch (Exception ex)

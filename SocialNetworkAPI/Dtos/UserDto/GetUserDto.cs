@@ -1,4 +1,4 @@
-﻿namespace SocialNetworkAPI.Dtos.User
+﻿namespace SocialNetworkAPI.Dtos.UserDto
 {
     public class GetUserDto
     {

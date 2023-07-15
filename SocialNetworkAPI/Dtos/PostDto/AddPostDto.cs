@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SocialNetworkAPI.Dtos.Post
+namespace SocialNetworkAPI.Dtos.PostDto
 {
     public class AddPostDto
     {
