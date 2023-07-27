@@ -36,6 +36,9 @@ namespace SocialNetworkAPI.Data
 
             modelBuilder.Entity<Post>()
                 .ToTable("Posts");
+
+            modelBuilder.Entity<Comment>()
+                .ToTable("Comments");
             #endregion
 
             #region Properties
@@ -77,16 +80,22 @@ namespace SocialNetworkAPI.Data
             #endregion
 
             #region Relationships
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.Comments)
-                .WithOne(u => u.User)
-                .HasForeignKey(u => u.UserId)
+            modelBuilder.Entity<Post>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.Posts)
+                .HasForeignKey(p => p.UserId)
                 .IsRequired();
 
-            modelBuilder.Entity<Post>()
-                .HasMany(p => p.Comments)
-                .WithOne(p => p.Post)
-                .HasForeignKey(p => p.PostId)
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.User)
+                .WithMany(c => c.Comments)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Post)
+                .WithMany(p => p.Comments)
+                .HasForeignKey(c => c.PostId)
                 .IsRequired();
             #endregion
 

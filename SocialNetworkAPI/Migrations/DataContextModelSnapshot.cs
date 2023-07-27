@@ -56,7 +56,7 @@ namespace SocialNetworkAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("SocialNetworkAPI.Models.Post", b =>
@@ -85,7 +85,12 @@ namespace SocialNetworkAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Posts", (string)null);
                 });
@@ -136,10 +141,21 @@ namespace SocialNetworkAPI.Migrations
                     b.HasOne("SocialNetworkAPI.Models.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SocialNetworkAPI.Models.Post", b =>
+                {
+                    b.HasOne("SocialNetworkAPI.Models.User", "User")
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -152,6 +168,8 @@ namespace SocialNetworkAPI.Migrations
             modelBuilder.Entity("SocialNetworkAPI.Models.User", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

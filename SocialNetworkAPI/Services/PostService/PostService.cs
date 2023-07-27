@@ -97,7 +97,7 @@
 
         public async Task<Post> FindPost(int id)
         {
-            var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+            var post = await _context.Posts.Include(p => p.Comments).FirstOrDefaultAsync(p => p.Id == id);
             if (post is null)
                 throw new Exception($"Post with the Id '{id}' not found.");
 

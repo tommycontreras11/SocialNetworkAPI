@@ -1,4 +1,6 @@
-﻿namespace SocialNetworkAPI.Dtos.CommentDto
+﻿using System.Text.Json.Serialization;
+
+namespace SocialNetworkAPI.Dtos.CommentDto
 {
     public class GetCommentDto
     {
@@ -7,10 +9,10 @@
         public string ImageUrl { get; set; } = string.Empty;
 
         //Navigation property
+        //[JsonIgnore]
         public int PostId { get; set; }
-        public Post Post { get; set; } = null!;
 
+        //[JsonIgnore]
         public int UserId { get; set; }
-        public User User { get; set; } = null!;
     }
 }

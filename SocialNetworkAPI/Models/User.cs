@@ -1,4 +1,5 @@
 ﻿using SocialNetworkAPI.Common;
+using System.Text.Json.Serialization;
 
 namespace SocialNetworkAPI.Models
 {
@@ -10,6 +11,7 @@ namespace SocialNetworkAPI.Models
         public Gender Gender { get; set; }
 
         //Navigation property
-        public ICollection<Comment> Comments { get; } = new List<Comment>();
+        public List<Post> Posts { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

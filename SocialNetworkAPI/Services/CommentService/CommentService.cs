@@ -25,7 +25,7 @@
             try
             {
                 var comment = await FindComment(id);
-
+                
                 serviceResponse.Data = _mapper.Map<GetCommentDto>(comment);
             }
             catch (Exception ex)
@@ -43,7 +43,7 @@
             var comment = _mapper.Map<Comment>(request);
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
-            var foundComment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == comment.Id);
+            var foundComment = await _context.Comments.Include(c => c.Post).Include(c => c.User).FirstOrDefaultAsync(c => c.Id == comment.Id);
             serviceResponse.Data = _mapper.Map<GetCommentDto>(foundComment);
             return serviceResponse;
         }
@@ -103,6 +103,5 @@
 
             return comment;
         }
-
     }
 }

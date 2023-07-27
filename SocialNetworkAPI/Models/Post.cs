@@ -9,6 +9,8 @@ namespace SocialNetworkAPI.Models
         public string? ImageUrl { get; set; } = string.Empty;
 
         //Navigation property
-        public ICollection<Comment> Comments { get; } = new List<Comment>();
+        public int UserId { get; set; }
+        public User User { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

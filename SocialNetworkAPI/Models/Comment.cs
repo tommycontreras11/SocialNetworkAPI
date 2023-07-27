@@ -9,9 +9,9 @@ namespace SocialNetworkAPI.Models
 
         //Navigation property
         public int PostId { get; set; }
-        public Post Post { get; set; } = null!;
+        public Post Post { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; } = null!;
+        public User User { get; set; }
     }
 }

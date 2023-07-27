@@ -14,7 +14,7 @@
         public async Task<ServiceResponse<List<GetUserDto>>> GetAllUsers()
         {
             var serviceResponse = new ServiceResponse<List<GetUserDto>>();
-            serviceResponse.Data = await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync(); ;
+            serviceResponse.Data = await _context.Users.Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync();
             return serviceResponse;
         }
 
@@ -25,7 +25,6 @@
             try
             {
                 var user = await FindUser(id);
-
                 serviceResponse.Data = _mapper.Map<GetUserDto>(user);
             }
             catch (Exception ex)
@@ -98,7 +97,8 @@
 
         public async Task<User> FindUser(int id) 
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _context.Users.Include(u => u.Posts).Include(u => u.Comments)
+                .FirstOrDefaultAsync(u => u.Id == id);
             if (user is null)
                 throw new Exception($"User with the Id '{id}' not found.");
 
